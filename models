@@ -1,0 +1,115 @@
+from django.db import models
+
+class Pesquisador(models.Model):
+    nome = models.CharField("Nome", max_length= 64 )
+    email = models.EmailField("Email")
+    
+    def __unicode__(self):
+        return self.nome
+    
+class Laboratorio(models.Model):
+    nome = models.CharField("Nome", max_length= 64 )
+    endereco = models.CharField("Endereco", max_length = 256, null=True, blank=True)
+    administrador= models.ForeignKey(Pesquisador)
+    
+    def __unicode__(self):
+        return self.nome
+    
+class MLaboratorio_Pesquisador(models.Model):
+    pesquisador= models.ForeignKey(Pesquisador, related_name="MLaboratorio_Pesquisador_pesquisador")
+    laboratorio= models.ForeignKey(Laboratorio, related_name="MLaboratorio_Pesquisador_laboratorio")
+    status=models.IntegerField("Status", default = 1)
+    #0=desativo
+    #1=ativo
+    #2=convite em espera
+    
+class Empresa(models.Model):
+    nome = models.CharField("Nome", max_length= 64 )
+    cnpj = models.CharField("CNPJ", max_length= 16)
+    email = models.EmailField("Email")
+    area_de_atuacao= models.CharField("Nome", max_length= 128 )
+    
+    def __unicode__(self):
+        return self.nome
+    
+class MEmpresa_Pesquisador(models.Model):
+    pesquisador= models.ForeignKey(Pesquisador, related_name="MEmpresa_Pesquisador_pesquisador")
+    empresa= models.ForeignKey(Empresa, related_name="MEmpresa_Pesquisador_empresa")
+    status=models.IntegerField("Status", default = 1)
+    #0=desativo
+    #1=ativo
+    
+class MEmpresa_Laboratorio(models.Model):
+    laboratorio= models.ForeignKey(Laboratorio, related_name="MEmpresa_Laboratorio_laboratorio")
+    empresa= models.ForeignKey(Empresa, related_name="MEmpresa_Laboratorio_empresa")
+    status=models.IntegerField("Status", default = 1)
+    #0=desativo
+    #1=ativo       
+    
+class Amizade(models.Model):
+    laboratorio1= models.ForeignKey(Laboratorio, related_name="Amizade_laboratorio1")
+    laboratorio2= models.ForeignKey(Laboratorio, related_name="Amizade_laboratorio2")
+    status=models.IntegerField("Status", default = 1)
+    #0=desativo
+    #1=ativo
+    #2=convite em espera
+    
+class Mensagem(models.Model):
+    laboratorio1= models.ForeignKey(Laboratorio, related_name="Mensagem_laboratorio1", null = True, blank=True)
+    laboratorio2= models.ForeignKey(Laboratorio, related_name="Mensagem_laboratorio2", null = True, blank=True)
+    pesquisador1=models.ForeignKey(Pesquisador, related_name="Mensagem_pesquisador1", null = True, blank=True)
+    pesquisador2=models.ForeignKey(Pesquisador, related_name="Mensagem_pesquisador2", null = True, blank=True)
+    mensagem=models.TextField("Mensagem")
+    
+class Material(models.Model):
+    nome = models.CharField("Nome", max_length= 64 )
+    laboratorio= models.ForeignKey(Laboratorio, related_name="Material_laboratorio")
+    unidade=models.CharField("Unidade de medida", max_length= 64 )
+    quatidade=models.FloatField("Quantidade")
+    
+    def __unicode__(self):
+        return self.nome
+    
+class Aparelho(models.Model):
+    nome = models.CharField("Nome", max_length= 64 )
+    laboratorio= models.ForeignKey(Laboratorio, related_name="Aparelho_laboratorio")
+    
+    def __unicode__(self):
+        return self.nome
+    
+class Agendamento(models.Model):
+    aparelho= models.ForeignKey(Laboratorio, related_name="Agenda_aparelho")
+    pesquisador = models.ForeignKey(Pesquisador, related_name="Agendamento_pesquisador")
+    dia= models.DateField("Dia")
+    horario=models.TimeField("Horario")
+    
+class Informacao(models.Model):
+    laboratorio= models.ForeignKey(Laboratorio, related_name="Informacao_laboratorio")
+    informacao=models.TextField("Informacao")
+    pesquisador=models.ForeignKey(Pesquisador,related_name="Informacao_pesquisador")
+    
+class Post(models.Model):
+    texto=models.TextField("Texto")
+    laboratorio= models.ForeignKey(Laboratorio, related_name="Post_laboratorio", null=True, blank=True)
+    pesquisador=models.ForeignKey(Pesquisador,related_name="Post_pesquisador", null=True, blank=True)
+    empresa=models.ForeignKey(Empresa,related_name="Post_empresa", null=True, blank=True)
+    #code
+class Comentario (models.Model):
+    comentario=models.TextField("Comentario")
+    laboratorio= models.ForeignKey(Laboratorio, related_name="Comentario_laboratorio", null=True, blank=True)
+    pesquisador=models.ForeignKey(Pesquisador,related_name="Comentario_pesquisador", null=True, blank=True)
+    empresa=models.ForeignKey(Empresa,related_name="Comentario_empresa", null=True, blank=True)
+    post=models.ForeignKey(Post,related_name="Comentario_post")
+    
+class Curtida (models.Model):
+    laboratorio= models.ForeignKey(Laboratorio, related_name="Curtida_laboratorio", null=True, blank=True)
+    pesquisador=models.ForeignKey(Pesquisador,related_name="Curtida_pesquisador", null=True, blank=True)
+    empresa=models.ForeignKey(Empresa,related_name="Curtida_empresa", null=True, blank=True)
+    post=models.ForeignKey(Post,related_name="Curtida_post")
+
+
+
+    
+
+    
+    
