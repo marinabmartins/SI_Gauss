@@ -1,0 +1,106 @@
+# -*- coding: utf-8 -*-
+
+from django.core.management.base import NoArgsCommand
+from sistema.models import *
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from datetime import datetime, date
+
+#class Command(NoArgsCommand):
+#    def handle_noargs(self, **options):
+#        
+#        somemodel_ct = ContentType.objects.get(app_label='auth', model='user')
+#        
+#        grupoadmin = Group(name = 'admin')
+#        grupoadmin.save()
+#        gruporegional = Group(name = 'regional')
+#        gruporegional.save()
+#        gruposubregional = Group(name = 'subregional')
+#        gruposubregional.save()
+#        grupogaf = Group(name = 'gaf')
+#        grupogaf.save()
+#        grupoadf = Group(name = 'adf')
+#        grupoadf.save()
+#        grupochefesetor = Group(name = 'chefesetor')
+#        grupochefesetor.save()
+#        gruposetor = Group(name = 'setor')
+#        gruposetor.save()
+#        gruposaude = Group(name = 'saude')
+#        gruposaude.save()
+#        grupoadm = Group(name ='adm')
+#        grupoadm.save()
+#        gruporh = Group(name ='rh')
+#        gruporh.save()
+#        
+#        permadmin = Permission(name='Permissao admin', codename='permadmin',content_type=somemodel_ct)
+#        permadmin.save()
+#        permregional = Permission(name='Permissao regional', codename='permregional',content_type=somemodel_ct)
+#        permregional.save()
+#        permsubregional = Permission(name='Permissao sub regional', codename='permsubregional',content_type=somemodel_ct)
+#        permsubregional.save()
+#        permgaf = Permission(name='Permissao gaf', codename='permgaf',content_type=somemodel_ct)
+#        permgaf.save()
+#        permadf = Permission(name='Permissao adf', codename='permadf',content_type=somemodel_ct)
+#        permadf.save()
+#        permchefesetor = Permission(name='Permissao chefe setor', codename='permchefesetor',content_type=somemodel_ct)
+#        permchefesetor.save()
+#        permsetor = Permission(name='Permissao setor', codename='permsetor',content_type=somemodel_ct)
+#        permsetor.save()
+#        permsaude = Permission(name='Permissao Saude', codename='permsaude',content_type=somemodel_ct)
+#        permsaude.save()
+#        permadm = Permission(name='Permissao Adm', codename='permadm',content_type=somemodel_ct)
+#        permadm.save()
+#        permrh = Permission(name='Permissao RH', codename='permrh',content_type=somemodel_ct)
+#        permrh.save()
+#        
+#        grupoadmin.permissions = [permadmin, permregional, permsubregional, permgaf, permadf, permchefesetor, permsetor, permsaude, permadm]
+#        gruporegional.permissions = [permregional, permsubregional, permgaf, permadf]
+#        gruposubregional.permissions.add(permsubregional, permgaf, permadf)
+#        grupogaf.permissions = [permgaf, permadf, permchefesetor, permsetor, permsaude, permadm, permrh]
+#        grupoadf.permissions = [permadf, permchefesetor, permsetor, permsaude, permadm, permrh]
+#        grupochefesetor.permissions = [permchefesetor, permsetor,]
+#        gruposetor.permissions.add(permsetor)
+#        gruposaude.permissions = [permsetor, permsaude]
+#        grupoadm.permissions = [permsetor, permadm]
+#        gruporh.permissions = [permsetor, permrh]
+#        
+#        user = User.objects.create_user('admin', 'admin@admin.com', 'admin')
+#        user.is_superuser = True
+#        user.is_staff = True
+#        user.group = [grupoadmin]
+#        user.save()
+#        
+#        funcionario = Funcionario()
+#        funcionario.nome ='joao'
+#        funcionario.cargo = 'GAF'
+#        funcionario.usuario = user
+#        funcionario.save()
+#        
+#        def criar_usuario(login, email, senha, nome, cargo, grupo):
+#            user = User.objects.create_user(login, email, senha)
+#            user.is_staff = False
+#            user.is_superuser = False
+#            user.groups = [grupo]
+#            user.save()
+#            funcionario = Funcionario()
+#            funcionario.nome = nome
+#            funcionario.cargo = cargo
+#            funcionario.usuario = user
+#            funcionario.save()
+#            return user
+#        
+#        user1 = criar_usuario("gaf","gaf@gaf.com", "gaf", "nome_gaf", "GAF",grupogaf)
+#        user2 = criar_usuario("adf","adf@adf.com", "adf", "nome_adf", "ADF", grupoadf)
+#        user3 = criar_usuario("regional","regional@regional.com", "regional", "nome_regional", "Diretor_regional", gruporegional)
+#        user4 = criar_usuario("subregional","subregional@subregional.com", "subregional", "nome_subregional", "Diretor_subregional", gruposubregional)
+#        user5 = criar_usuario("setor_saude","setorsaude@setor.com", "setorsaude", "nome_setor_saude", "Funcionario_setor_saude", gruposaude)
+#        user6 = criar_usuario("setor_rh","setorrh@setor.com", "setorrh", "nome_setor_rh", "Funcionario_setor_RH", gruporh)
+#        user7 = criar_usuario("setor_seguranca","setorseguranca@setor.com", "setorseguranca", "nome_setor_seguranca", "Funcionario_setor_seguranca", gruposetor)
+#        user8 = criar_usuario("setor_adm","setoradm@setor.com", "setoradm", "nome_setor_adm", "Funcionario_setor_adm", grupoadm)
+#        user9 = criar_usuario("fase1saude","fase1saude@setor.com", "123", "fase1saude", "Funcionario_setor_saude", gruposaude)
+#        user10 = criar_usuario("fase1rh","fase1rh@setor.com", "123", "fase1rh", "Funcionario_setor_RH", gruporh)
+#        user11 = criar_usuario("fase1seguranca","fase1seguranca@setor.com", "123", "fase1seguranca", "Funcionario_setor_seguranca", gruposetor)
+#        user12 = criar_usuario("fase1adm","fase1adm@setor.com", "123", "fase1adm", "Funcionario_setor_adm", grupoadm)
+#                
+        
+        print ("fazer mockup")
