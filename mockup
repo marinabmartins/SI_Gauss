@@ -10,6 +10,7 @@ from datetime import datetime, date
 #    def handle_noargs(self, **options):
 #        
 #        somemodel_ct = ContentType.objects.get(app_label='auth', model='user')
+
 #        
 #        grupoadmin = Group(name = 'admin')
 #        grupoadmin.save()
