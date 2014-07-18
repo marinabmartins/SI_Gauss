@@ -6,102 +6,434 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from datetime import datetime, date
 
-#class Command(NoArgsCommand):
-#    def handle_noargs(self, **options):
-#        
-#        somemodel_ct = ContentType.objects.get(app_label='auth', model='user')
-
-#        
-#        grupoadmin = Group(name = 'admin')
-#        grupoadmin.save()
-#        gruporegional = Group(name = 'regional')
-#        gruporegional.save()
-#        gruposubregional = Group(name = 'subregional')
-#        gruposubregional.save()
-#        grupogaf = Group(name = 'gaf')
-#        grupogaf.save()
-#        grupoadf = Group(name = 'adf')
-#        grupoadf.save()
-#        grupochefesetor = Group(name = 'chefesetor')
-#        grupochefesetor.save()
-#        gruposetor = Group(name = 'setor')
-#        gruposetor.save()
-#        gruposaude = Group(name = 'saude')
-#        gruposaude.save()
-#        grupoadm = Group(name ='adm')
-#        grupoadm.save()
-#        gruporh = Group(name ='rh')
-#        gruporh.save()
-#        
-#        permadmin = Permission(name='Permissao admin', codename='permadmin',content_type=somemodel_ct)
-#        permadmin.save()
-#        permregional = Permission(name='Permissao regional', codename='permregional',content_type=somemodel_ct)
-#        permregional.save()
-#        permsubregional = Permission(name='Permissao sub regional', codename='permsubregional',content_type=somemodel_ct)
-#        permsubregional.save()
-#        permgaf = Permission(name='Permissao gaf', codename='permgaf',content_type=somemodel_ct)
-#        permgaf.save()
-#        permadf = Permission(name='Permissao adf', codename='permadf',content_type=somemodel_ct)
-#        permadf.save()
-#        permchefesetor = Permission(name='Permissao chefe setor', codename='permchefesetor',content_type=somemodel_ct)
-#        permchefesetor.save()
-#        permsetor = Permission(name='Permissao setor', codename='permsetor',content_type=somemodel_ct)
-#        permsetor.save()
-#        permsaude = Permission(name='Permissao Saude', codename='permsaude',content_type=somemodel_ct)
-#        permsaude.save()
-#        permadm = Permission(name='Permissao Adm', codename='permadm',content_type=somemodel_ct)
-#        permadm.save()
-#        permrh = Permission(name='Permissao RH', codename='permrh',content_type=somemodel_ct)
-#        permrh.save()
-#        
-#        grupoadmin.permissions = [permadmin, permregional, permsubregional, permgaf, permadf, permchefesetor, permsetor, permsaude, permadm]
-#        gruporegional.permissions = [permregional, permsubregional, permgaf, permadf]
-#        gruposubregional.permissions.add(permsubregional, permgaf, permadf)
-#        grupogaf.permissions = [permgaf, permadf, permchefesetor, permsetor, permsaude, permadm, permrh]
-#        grupoadf.permissions = [permadf, permchefesetor, permsetor, permsaude, permadm, permrh]
-#        grupochefesetor.permissions = [permchefesetor, permsetor,]
-#        gruposetor.permissions.add(permsetor)
-#        gruposaude.permissions = [permsetor, permsaude]
-#        grupoadm.permissions = [permsetor, permadm]
-#        gruporh.permissions = [permsetor, permrh]
-#        
-#        user = User.objects.create_user('admin', 'admin@admin.com', 'admin')
-#        user.is_superuser = True
-#        user.is_staff = True
-#        user.group = [grupoadmin]
-#        user.save()
-#        
-#        funcionario = Funcionario()
-#        funcionario.nome ='joao'
-#        funcionario.cargo = 'GAF'
-#        funcionario.usuario = user
-#        funcionario.save()
-#        
-#        def criar_usuario(login, email, senha, nome, cargo, grupo):
-#            user = User.objects.create_user(login, email, senha)
-#            user.is_staff = False
-#            user.is_superuser = False
-#            user.groups = [grupo]
-#            user.save()
-#            funcionario = Funcionario()
-#            funcionario.nome = nome
-#            funcionario.cargo = cargo
-#            funcionario.usuario = user
-#            funcionario.save()
-#            return user
-#        
-#        user1 = criar_usuario("gaf","gaf@gaf.com", "gaf", "nome_gaf", "GAF",grupogaf)
-#        user2 = criar_usuario("adf","adf@adf.com", "adf", "nome_adf", "ADF", grupoadf)
-#        user3 = criar_usuario("regional","regional@regional.com", "regional", "nome_regional", "Diretor_regional", gruporegional)
-#        user4 = criar_usuario("subregional","subregional@subregional.com", "subregional", "nome_subregional", "Diretor_subregional", gruposubregional)
-#        user5 = criar_usuario("setor_saude","setorsaude@setor.com", "setorsaude", "nome_setor_saude", "Funcionario_setor_saude", gruposaude)
-#        user6 = criar_usuario("setor_rh","setorrh@setor.com", "setorrh", "nome_setor_rh", "Funcionario_setor_RH", gruporh)
-#        user7 = criar_usuario("setor_seguranca","setorseguranca@setor.com", "setorseguranca", "nome_setor_seguranca", "Funcionario_setor_seguranca", gruposetor)
-#        user8 = criar_usuario("setor_adm","setoradm@setor.com", "setoradm", "nome_setor_adm", "Funcionario_setor_adm", grupoadm)
-#        user9 = criar_usuario("fase1saude","fase1saude@setor.com", "123", "fase1saude", "Funcionario_setor_saude", gruposaude)
-#        user10 = criar_usuario("fase1rh","fase1rh@setor.com", "123", "fase1rh", "Funcionario_setor_RH", gruporh)
-#        user11 = criar_usuario("fase1seguranca","fase1seguranca@setor.com", "123", "fase1seguranca", "Funcionario_setor_seguranca", gruposetor)
-#        user12 = criar_usuario("fase1adm","fase1adm@setor.com", "123", "fase1adm", "Funcionario_setor_adm", grupoadm)
-#                
+class Command(NoArgsCommand):
+    def handle_noargs(self, **options):
         
-        print ("fazer mockup")
+        somemodel_ct = ContentType.objects.get(app_label='auth', model='user')
+        
+        grupoadmin = Group(name = 'admin')
+        grupoadmin.save()
+        grupopesquisador = Group(name = 'pesquisador')
+        grupopesquisador.save()
+        grupoadminlab = Group(name = 'adminlab')
+        grupoadminlab.save()
+        grupoempresa = Group(name = 'empresa')
+        grupoempresa.save()
+        
+        permadmin = Permission(name='Permissao admin', codename='permadmin',content_type=somemodel_ct)
+        permadmin.save()
+        permpesquisador = Permission(name='Permissao pesquisador', codename='permpesquisador',content_type=somemodel_ct)
+        permpesquisador.save()
+        permadminlab = Permission(name='Permissao administrador laboratorio', codename='permadminlab',content_type=somemodel_ct)
+        permadminlab.save()
+        permempresa = Permission(name='Permissao empresa', codename='permgaf',content_type=somemodel_ct)
+        permempresa.save()
+        
+        grupoadmin.permissions = [permadmin, permpesquisador, permadminlab, permempresa]
+        grupopesquisador.permissions.add(permpesquisador)
+        grupoadminlab.permissions.add(permadminlab)
+        grupoempresa.permissions.add(permempresa)
+        
+        # Daqui pra frente não sei direito haha  :/
+        
+        #user = User.objects.create_user('admin', 'admin@admin.com', 'admin')
+        #user.is_superuser = True
+        #user.is_staff = True
+        #user.group = [grupoadmin]
+        #user.save()
+        #
+        #funcionario = Funcionario()
+        #funcionario.nome ='joao'
+        #funcionario.cargo = 'GAF'
+        #funcionario.usuario = user
+        #funcionario.save()
+        #
+        #def criar_usuario(login, email, senha, nome, cargo, grupo):
+        #    user = User.objects.create_user(login, email, senha)
+        #    user.is_staff = False
+        #    user.is_superuser = False
+        #    user.groups = [grupo]
+        #    user.save()
+        #    funcionario = Funcionario()
+        #    funcionario.nome = nome
+        #    funcionario.cargo = cargo
+        #    funcionario.usuario = user
+        #    funcionario.save()
+        #    return user
+        #
+        #user1 = criar_usuario("gaf","gaf@gaf.com", "gaf", "nome_gaf", "GAF",grupogaf)
+        #user2 = criar_usuario("adf","adf@adf.com", "adf", "nome_adf", "ADF", grupoadf)
+        #user3 = criar_usuario("regional","regional@regional.com", "regional", "nome_regional", "Diretor_regional", gruporegional)
+        #user4 = criar_usuario("subregional","subregional@subregional.com", "subregional", "nome_subregional", "Diretor_subregional", gruposubregional)
+        #user5 = criar_usuario("setor_saude","setorsaude@setor.com", "setorsaude", "nome_setor_saude", "Funcionario_setor_saude", gruposaude)
+        #user6 = criar_usuario("setor_rh","setorrh@setor.com", "setorrh", "nome_setor_rh", "Funcionario_setor_RH", gruporh)
+        #user7 = criar_usuario("setor_seguranca","setorseguranca@setor.com", "setorseguranca", "nome_setor_seguranca", "Funcionario_setor_seguranca", gruposetor)
+        #user8 = criar_usuario("setor_adm","setoradm@setor.com", "setoradm", "nome_setor_adm", "Funcionario_setor_adm", grupoadm)
+        #user9 = criar_usuario("fase1saude","fase1saude@setor.com", "123", "fase1saude", "Funcionario_setor_saude", gruposaude)
+        #user10 = criar_usuario("fase1rh","fase1rh@setor.com", "123", "fase1rh", "Funcionario_setor_RH", gruporh)
+        #user11 = criar_usuario("fase1seguranca","fase1seguranca@setor.com", "123", "fase1seguranca", "Funcionario_setor_seguranca", gruposetor)
+        #user12 = criar_usuario("fase1adm","fase1adm@setor.com", "123", "fase1adm", "Funcionario_setor_adm", grupoadm)
+        #
+        #
+        #def criar_obra(nome, usuario):
+        #    obra = Obra()
+        #    obra.nome = nome
+        #    func = Funcionario.objects.get(usuario = usuario)
+        #    obra.gaf = func
+        #    obra.data_inicio = "2013-11-12"
+        #    obra.data_termino = "2016-11-12"
+        #    obra.save()
+        #    return obra
+        #
+        #obra1 = criar_obra("obra1", user1)
+        #obra2 = criar_obra("obra2", user1)
+        #obra3 = criar_obra("obra3", user1)
+        #
+        #def criar_fase(nome, obra):
+        #    fase = Fase()
+        #    fase.nome = nome
+        #    fase.obra = obra
+        #    fase.cnpj = "99.999.999/0001-99"
+        #    fase.uo = "uo"
+        #    fase.ue = "ue"
+        #    fase.cei = "cei"
+        #    fase.insc = "insc"
+        #    fase.iss = "iss"
+        #    fase.informacoes = "informações"
+        #    # do cronograma
+        #    fase.lancamento = "2013-1-1"
+        #    fase.endereco= "Endereço"
+        #    fase.data_inicio = "2013-2-2"
+        #    fase.data_termino = "2013-3-3"
+        #    fase.habitese = "2013-4-4"
+        #    # da conta bancária
+        #    fase.nome_conta = "Nome"
+        #    fase.banco = "Banco"
+        #    fase.agencia = "Agencia"
+        #    fase.cc = "Conta Corrente"
+        #    fase.obs = "observação"
+        #    # do orçamento
+        #    fase.orcamento = "orçamento"
+        #    fase.incc_mes = "incc"
+        #    fase.save()
+        #    return fase
+        #
+        #fase1 = criar_fase("fase1obra1", obra1)
+        #fase2 = criar_fase("fase2obra1", obra1)
+        #fase3 = criar_fase("fase1obra2", obra2)
+        #fase4 = criar_fase("fase1obra3", obra3)
+        #fase5 = criar_fase("fase2obra3", obra3)
+        #fase6 = criar_fase("fase3obra3", obra3)
+        #
+        #def alocar_setor(usuario, fase):
+        #    func = Funcionario.objects.get(usuario = usuario)
+        #    link = MFase_Funcionario()
+        #    link.funcionario = func
+        #    link.fase = fase
+        #    link.save()
+        #    return link
+        #
+        #link1 = alocar_setor(user9,fase4)
+        #link2 = alocar_setor(user10,fase4)
+        #link3 = alocar_setor(user11,fase4)
+        #link4 = alocar_setor(user12,fase4)
+        #link5 = alocar_setor(user5, fase1)
+        #link6 = alocar_setor(user6, fase1)
+        #
+        #def criar_empresa(nome, email, cnpj):
+        #    empresa = Empresa()
+        #    empresa.nome = nome
+        #    empresa.cnpj = cnpj
+        #    empresa.email = email
+        #    empresa.save()
+        #    return empresa
+        #
+        #
+        #empresa1 = criar_empresa("empresa1", "empresa1@empresa.com", "62.025.689/0001-60")
+        #empresa2 = criar_empresa("empresa2", "empresa2@empresa.com", "62.025.689/0001-61")
+        #empresa3 = criar_empresa("empresa3", "empresa3@empresa.com", "62.025.689/0001-62")
+        #empresa4 = criar_empresa("empresa4", "empresa4@empresa.com", "62.025.689/0001-63")
+        #empresa5 = criar_empresa("empresa5", "empresa5@empresa.com", "62.025.689/0001-64")
+        #empresa6 = criar_empresa("empresa6", "empresa6@empresa.com", "62.025.689/0001-65")
+        #
+        #def criar_servico(nome):
+        #    servico = Tipo_Servico()
+        #    servico.servico = nome
+        #    servico.save()
+        #    return servico
+        #
+        #servico1 = criar_servico("Prestação de Serviço")
+        #servico2 = criar_servico("Locação de Bens e Móveis")
+        #servico3 = criar_servico("Compra de Material")
+        #
+        #
+        #def criar_contrato(empresa, fase, numero_c, numero_p, tipo, email_contato,status):
+        #    contrato=Contrato()
+        #    contrato.tipo_servico = tipo
+        #    contrato.numero_proposta= numero_p
+        #    contrato.numero_contrato= numero_c
+        #    contrato.mes_elaboracao= "Janeiro"
+        #    contrato.data_assinatura= "2013-1-1"
+        #    contrato.data_vencimento= "2013-1-1"
+        #    contrato.fase = fase
+        #    contrato.empresa = empresa
+        #    contrato.contato = "Bob"
+        #    contrato.status=status
+        #    contrato.email_contato = email_contato
+        #    contrato.save()
+        #    return contrato
+        #   
+        #contrato1 = criar_contrato(empresa1, fase1, "123", "123", servico1,"blablabla.empresa@outlook.com",'em_edicao')
+        #contrato2 = criar_contrato(empresa2, fase1, "234", "234", servico2,"blablabla.empresa@outlook.com",'em_assinatura')
+        #contrato3 = criar_contrato(empresa3, fase1, "345", "345", servico3,"blablabla.empresa@outlook.com",'vigente')
+        #contrato4 = criar_contrato(empresa4, fase1, "456", "456", servico1,"blablabla.empresa@outlook.com",'vigente')
+        #contrato5 = criar_contrato(empresa5, fase1, "567", "567", servico2,"blablabla.empresa@outlook.com",'tqf_assinado')
+        #contrato6 = criar_contrato(empresa1, fase1, "678", "678", servico3,"blablabla.empresa@outlook.com",'tqf_assinado')
+        #
+        ##senha do blablabla.empresa@outlook.com: a1!A1!***
+        ##prometo mudar essa senha para algo mais decente, mas por enquanto, é isso que temos
+        #
+        #def criar_funcao(funcao1):
+        #    funcao=Funcao()
+        #    funcao.funcao= funcao1
+        #    funcao.save()
+        #    return funcao
+        #
+        #pedreiro=criar_funcao("pedreiro")
+        #encanador=criar_funcao("auxiliar de enfermagem")
+        #carpinteiro=criar_funcao("técnico de segurança do trabalho")
+        #ajudante=criar_funcao("engenheiro civil")
+        #almoxarife=criar_funcao("almoxarife")
+        #tecnico=criar_funcao("técnico")
+        #mestre_obras=criar_funcao("mestre de obras")
+        #auxiliar_limpeza=criar_funcao("auxiliar de limpeza")
+        #eng_producaoe=criar_funcao("engenheiro de produção")
+        #concretista=criar_funcao("concretista")
+        #aj_concretista=criar_funcao("ajudante de concretista")
+        #op_guindaste=criar_funcao("operador de guidaste")
+        #mecanico=criar_funcao("mecanico")
+        #lider_concretagem=criar_funcao("líder concretagem")
+        #eletricista=criar_funcao("eletricista")
+        #soldador=criar_funcao("soldador")
+        #armador=criar_funcao("armador")
+        #op_escavadeira=criar_funcao("operador de escavadeira")
+        #controlador_acesso=criar_funcao("controlador de acesso")
+        #carpinteiro=criar_funcao("carpinteiro")
+        #aj_pedreiro=criar_funcao("ajudante de pedreiro")
+        #op_rolo=criar_funcao("operador de rolo compacto")
+        #aj_geral=criar_funcao("ajudante geral")
+        #caldereiro=criar_funcao("caldereiro")
+        #op_maquina=criar_funcao("operador de máquina")
+        #
+        #def criar_requisito_terceiro(nome, data_inicio, data_vencimento,setor):
+        #    requisito=Requisito_Terceiro()
+        #    requisito.requisito_terceiro=nome
+        #    requisito.data_inicio=data_inicio
+        #    requisito.data_vencimento=data_vencimento
+        #    requisito.setor=setor
+        #    requisito.save()
+        #    return requisito
+        #    
+        #aso = criar_requisito_terceiro("ASO", True, True,"saude")
+        #audiometria = criar_requisito_terceiro("Audiometria", True, True,"saude")
+        #anamnese = criar_requisito_terceiro("Anamnese", True, True,"saude")
+        #
+        #ficha_registro = criar_requisito_terceiro("Ficha de Registro", False, False, "rh")
+        #carteira_trabalho = criar_requisito_terceiro("Carteira de Trabalho", False, False,"rh")
+        #guia_grf = criar_requisito_terceiro("Guia GRF (FGTS)", False, False,"rh")
+        #relatorio_fgts = criar_requisito_terceiro("Relatório Analítico do FGTS (SEFIP)", False, False,"rh")
+        #protocolo_conectividade = criar_requisito_terceiro("Protocolo de Envio do Conectividade", False, False,"rh")
+        #guia_gps = criar_requisito_terceiro("Guia GPS", False, False,"rh")
+        #declaracao_contribuicoes = criar_requisito_terceiro("Comp. Declaração das Contribuições", False, False,"rh")
+        #informacoes_inss = criar_requisito_terceiro("Resumo das Informações ao INSS no SEFIP", False, False,"rh")
+        #relacao_tomador = criar_requisito_terceiro("Relação de Tomador/Obra - RET (SEFIP) c/ CEI", False, False,"rh")
+        #relacao_trabalhadores = criar_requisito_terceiro("Relação dos Trabalhadores - SEFIP", False, False,"rh")
+        #folha_pagamento = criar_requisito_terceiro("Folha de Pagamento e Resumo", False, False,"rh")
+        #recibo_pagamento = criar_requisito_terceiro("Recibo e Comprovante de Pagamento", False, False,"rh")
+        #cartao_ponto = criar_requisito_terceiro("Cartão Ponto", False, False,"rh")
+        #apolice_vida = criar_requisito_terceiro("Apólice Seguro de Vida (Comprovante de Pagamento)", False, False,"rh")
+        #caged = criar_requisito_terceiro("CAGED", False, False,"rh")
+        #contribuicao_mensal = criar_requisito_terceiro("Contribuição Retributiva Mensal", False, False,"rh")
+        #
+        #
+        #termo_rescisao = criar_requisito_terceiro("Termo de Rescisão", False, False,"rh")
+        #guia_grrf = criar_requisito_terceiro("Guia GRRF (multa FGTS)", False, False,"rh")
+        #ppp = criar_requisito_terceiro("PPP - Perfil Profissiográfico", False, False,"rh")
+        #exame = criar_requisito_terceiro("Exame Médico Ocupacional", False, False,"rh")
+        #
+        #
+        #declaracao = criar_requisito_terceiro("Declaração de integrante", True, False,"seguranca")
+        #
+        #def criar_requisito_empresa(nome, data_inicio, data_vencimento,setor):
+        #    requisito=Requisito_Empresa()
+        #    requisito.requisito_empresa=nome
+        #    requisito.data_inicio=data_inicio
+        #    requisito.data_vencimento=data_vencimento
+        #    requisito.setor=setor
+        #    requisito.save()
+        #    return requisito
+        #
+        #constituicao_social = criar_requisito_empresa("Constituição Social", False, False,"adm")
+        #cartao_cnpj = criar_requisito_empresa("Cartão CNPJ", False, False,"adm")
+        #inss = criar_requisito_empresa("CND - INSS", False, True,"adm")
+        #fgts = criar_requisito_empresa("CND - FGTS", False, True,"adm")
+        #cartorio = criar_requisito_empresa("CND - Cartório", False, True,"adm")
+        #divida_ativa = criar_requisito_empresa("CND - Dívida Ativa", False, True,"adm")
+        #secretaria_municipal = criar_requisito_empresa("CND - Secretaria Municipal", False, True,"adm")
+        #declaracao_contabil = criar_requisito_empresa("Declaração Contábil", False, True,"adm")
+        #termo_tributos = criar_requisito_empresa("Termo de Apuração de Tributos", False, False,"adm")
+        #art = criar_requisito_empresa("ART", False, False,"adm")
+        #contribuicao_sincical = criar_requisito_empresa("Contribuiçãoo Sindical Patronal", False, True,"adm")
+        #balanco_patrimonial = criar_requisito_empresa("Balanço Patrimonial", False, False,"adm")
+        #alvara = criar_requisito_empresa("Alvará de Licença e Funcionamento", False, False,"adm")
+        #
+        #segurancaempresa1 = criar_requisito_empresa("segurancaempresa1", True, False,"seguranca")
+        #    
+        #def criar_terceiro(nome,empresa,fase,funcao,cpf,ativo):
+        #    terceiro=Terceiro()
+        #    terceiro.nome= nome
+        #    terceiro.empresa= empresa
+        #    terceiro.fase=fase
+        #    terceiro.funcao= funcao
+        #    terceiro.cpf=cpf
+        #    terceiro.rg = "12321313213"
+        #    terceiro.data_nascimento = "2014-01-21"
+        #    terceiro.idade = "30"
+        #    terceiro.sexo = "masculino"
+        #    terceiro.ativo=ativo
+        #    terceiro.save()
+        #    return terceiro
+        #
+        #joao= criar_terceiro("joao",empresa1,fase1,pedreiro,"0000000","1")
+        #pedro=criar_terceiro("pedro",empresa1,fase1,pedreiro,"0000000","1")
+        #rafael=criar_terceiro("rafael",empresa2,fase1,carpinteiro,"0000000","1")
+        #paulo=criar_terceiro("paulo",empresa2,fase1,pedreiro,"0000000","1")
+        #guilherme=criar_terceiro("guilherme",empresa1,fase1,ajudante,"0000000","1")
+        #pessoa_rh1 =criar_terceiro("pessoa_rh1", empresa1, fase1, pedreiro,"0000000","2")
+        #pessoa_rh2 =criar_terceiro("pessoa_rh2", empresa1, fase1, pedreiro,"0000000","2")
+        #pessoa_rh3 =criar_terceiro("pessoa_rh3", empresa1, fase1, carpinteiro,"0000000","2")
+        #pessoa_rh4 =criar_terceiro("pessoa_rh4", empresa1, fase1, ajudante,"0000000","2")
+        #pessoa_adm1 =criar_terceiro("pessoa_adm1", empresa1, fase1, pedreiro,"0000000","3")
+        #pessoa_adm2 =criar_terceiro("pessoa_adm2", empresa1, fase1, pedreiro,"0000000","3")
+        #pessoa_adm3 =criar_terceiro("pessoa_adm3", empresa1, fase1, carpinteiro,"0000000","3")
+        #pessoa_adm4 =criar_terceiro("pessoa_adm4", empresa1, fase1, ajudante,"0000000","3")
+        #pessoa_seguranca1 =criar_terceiro("pessoa_seguranca1", empresa1, fase1, pedreiro,"0000000","4")
+        #pessoa_seguranca2 =criar_terceiro("pessoa_seguranca2", empresa1, fase1, pedreiro,"0000000","4")
+        #pessoa_seguranca3 =criar_terceiro("pessoa_seguranca3", empresa1, fase1, carpinteiro,"0000000","4")
+        #pessoa_seguranca4 =criar_terceiro("pessoa_seguranca4", empresa1, fase1, ajudante,"0000000","4")
+        #
+        #def criar_mfuncao_requisito(funcao,requisito):
+        #    mfuncao_requisito=MFuncao_Requisito()
+        #    mfuncao_requisito.funcao =  funcao
+        #    mfuncao_requisito.requisito = requisito
+        #    mfuncao_requisito.save()
+        #    return mfuncao_requisito
+        #    
+        #mfuncao_requisito1=criar_mfuncao_requisito(pedreiro,aso)
+        #mfuncao_requisito2=criar_mfuncao_requisito(pedreiro,audiometria) 
+        #mfuncao_requisito3=criar_mfuncao_requisito(encanador, anamnese)    
+        #mfuncao_requisito4=criar_mfuncao_requisito(carpinteiro,ficha_registro)  
+        #mfuncao_requisito5=criar_mfuncao_requisito(encanador,aso)
+        #mfuncao_requisito6=criar_mfuncao_requisito(carpinteiro,aso)
+        #mfuncao_requisito7=criar_mfuncao_requisito(ajudante,ficha_registro)
+        #mfuncao_requisito8=criar_mfuncao_requisito(pedreiro,carteira_trabalho)
+        #mfuncao_requisito9=criar_mfuncao_requisito(pedreiro,guia_gps) 
+        #mfuncao_requisito10=criar_mfuncao_requisito(encanador,cartao_ponto)    
+        #mfuncao_requisito11=criar_mfuncao_requisito(carpinteiro,caged)  
+        #mfuncao_requisito12=criar_mfuncao_requisito(encanador,apolice_vida)
+        #mfuncao_requisito13=criar_mfuncao_requisito(carpinteiro,contribuicao_mensal)
+        #mfuncao_requisito14=criar_mfuncao_requisito(ajudante, informacoes_inss)
+        #mfuncao_requisito15=criar_mfuncao_requisito(pedreiro, relacao_tomador)
+        #mfuncao_requisito16=criar_mfuncao_requisito(pedreiro, relacao_trabalhadores) 
+        #mfuncao_requisito17=criar_mfuncao_requisito(encanador,protocolo_conectividade)    
+        #mfuncao_requisito18=criar_mfuncao_requisito(carpinteiro,apolice_vida)  
+        #mfuncao_requisito19=criar_mfuncao_requisito(encanador, relatorio_fgts)
+        #mfuncao_requisito20=criar_mfuncao_requisito(carpinteiro,declaracao)
+        #mfuncao_requisito21=criar_mfuncao_requisito(ajudante,declaracao)
+        #mfuncao_requisito22=criar_mfuncao_requisito(pedreiro, declaracao)
+        #
+        #def criar_mrequisito_servico(servico,requisito):
+        #    mrequisito_servico=MRequisito_Servico()
+        #    mrequisito_servico.servico = servico
+        #    mrequisito_servico.requisito = requisito
+        #    mrequisito_servico.save()
+        #    return mrequisito_servico
+        #
+        ##mrequisito_servico1=criar_mrequisito_servico(servico1,saudeempresa1)
+        ##mrequisito_servico2=criar_mrequisito_servico(servico1,saudeempresa2) 
+        ##mrequisito_servico3=criar_mrequisito_servico(servico1,saudeempresa3)    
+        ##mrequisito_servico4=criar_mrequisito_servico(servico1,saudeempresa4)  
+        ##mrequisito_servico5=criar_mrequisito_servico(servico1,rhempresa1)
+        ##mrequisito_servico6=criar_mrequisito_servico(servico1,rhempresa2)
+        ##mrequisito_servico7=criar_mrequisito_servico(servico1,rhempresa3)
+        ##mrequisito_servico8=criar_mrequisito_servico(servico1,rhempresa4)
+        #
+        #mrequisito_servico9=criar_mrequisito_servico(servico1,inss) 
+        #mrequisito_servico10=criar_mrequisito_servico(servico1,fgts)    
+        #mrequisito_servico11=criar_mrequisito_servico(servico1,cartorio)  
+        #mrequisito_servico12=criar_mrequisito_servico(servico1,divida_ativa)
+        #
+        #mrequisito_servico13=criar_mrequisito_servico(servico1,segurancaempresa1)
+        ##mrequisito_servico14=criar_mrequisito_servico(servico2,saudeempresa1)    
+        ##mrequisito_servico15=criar_mrequisito_servico(servico2,saudeempresa2)  
+        ##mrequisito_servico16=criar_mrequisito_servico(servico2,saudeempresa3)
+        ##mrequisito_servico17=criar_mrequisito_servico(servico2,saudeempresa4)
+        ##mrequisito_servico18=criar_mrequisito_servico(servico2,rhempresa1)
+        ##mrequisito_servico19=criar_mrequisito_servico(servico2,rhempresa2)
+        ##mrequisito_servico20=criar_mrequisito_servico(servico2,rhempresa3) 
+        ##mrequisito_servico21=criar_mrequisito_servico(servico2,rhempresa4)
+        #
+        #mrequisito_servico22=criar_mrequisito_servico(servico2,art)  
+        #mrequisito_servico23=criar_mrequisito_servico(servico2,alvara)
+        #
+        #mrequisito_servico24=criar_mrequisito_servico(servico2,segurancaempresa1)
+        #
+        #def criar_notificacao_terceiro(funcionario, terceiro):
+        #    notificacao_terceiro = Notificacao_Terceiro()
+        #    notificacao_terceiro.funcionario = funcionario
+        #    notificacao_terceiro.terceiro = terceiro
+        #    notificacao_terceiro.save()
+        #    return notificacao_terceiro
+        #
+        #lista_funcionarios = Funcionario.objects.all()
+        #for funcionario in lista_funcionarios:
+        #    if funcionario.cargo == 'GAF' or funcionario.cargo == 'Funcionario_setor_saude' or funcionario.cargo == 'Lider_setor_saude':
+        #        notificacao_terceiro = criar_notificacao_terceiro(funcionario, joao)
+        #        notificacao_terceiro.save()
+        #        notificacao_terceiro = criar_notificacao_terceiro(funcionario, pedro)
+        #        notificacao_terceiro.save()
+        #        notificacao_terceiro = criar_notificacao_terceiro(funcionario, rafael)
+        #        notificacao_terceiro.save()
+        #        notificacao_terceiro = criar_notificacao_terceiro(funcionario, paulo)
+        #        notificacao_terceiro.save()
+        #        notificacao_terceiro = criar_notificacao_terceiro(funcionario, guilherme)
+        #        notificacao_terceiro.save()
+        #        
+        #def criar_notificacao_requisito_ter(funcionario, terceiro):
+        #    notificacao_requisito = Notificacao_Requisito()
+        #    notificacao_requisito.funcionario = funcionario
+        #    notificacao_requisito.mrequisito_terceiro = terceiro
+        #    notificacao_requisito.save()
+        #    return notificacao_requisito
+        #
+        #def criar_notificacao_requisito_empresa(funcionario, empresa):
+        #    notificacao_requisito = Notificacao_Requisito()
+        #    notificacao_requisito.funcionario = funcionario
+        #    notificacao_requisito.mrequisito_empresa = empresa
+        #    notificacao_requisito.save()
+        #    return notificacao_requisito
+        #
+        #def criar_setor(nome):
+        #    setor=Setor()
+        #    setor.nome=nome
+        #    setor.save()
+        #    return setor
+        #
+        #setor_saude=criar_setor("saude")
+        #setor_RH=criar_setor("RH")
+        #setor_adm=criar_setor("adm")
+        #setor_seguranca=criar_setor("seguranca")
+        #        
+        #        
+        
+        print ("SI GAUSS - Mockup")
